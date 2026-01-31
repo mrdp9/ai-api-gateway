@@ -1,0 +1,18 @@
+2026-01-31T19:57:26Z INF Thank you for trying Cloudflare Tunnel. Doing so, without a Cloudflare account, is a quick way to experiment and try it out. However, be aware that these account-less Tunnels have no uptime guarantee, are subject to the Cloudflare Online Services Terms of Use (https://www.cloudflare.com/website-terms/), and Cloudflare reserves the right to investigate your use of Tunnels for violations of such terms. If you intend to use Tunnels in production you should use a pre-created named tunnel by following: https://developers.cloudflare.com/cloudflare-one/connections/connect-apps
+2026-01-31T19:57:26Z INF Requesting new quick Tunnel on trycloudflare.com...
+2026-01-31T19:57:31Z INF +--------------------------------------------------------------------------------------------+
+2026-01-31T19:57:31Z INF |  Your quick Tunnel has been created! Visit it at (it may take some time to be reachable):  |
+2026-01-31T19:57:31Z INF |  https://seats-bridge-contributing-hollow.trycloudflare.com                                |
+2026-01-31T19:57:31Z INF +--------------------------------------------------------------------------------------------+
+2026-01-31T19:57:31Z INF Cannot determine default configuration path. No file [config.yml config.yaml] in [~/.cloudflared ~/.cloudflare-warp ~/cloudflare-warp]
+2026-01-31T19:57:31Z INF Version 2024.12.0 (Checksum 166ec955b0b4ff61dd85903eb6771e57d78b5588387ad38df9505ed2301bd9a7)
+2026-01-31T19:57:31Z INF GOOS: windows, GOVersion: go1.22.5-devel-cf, GoArch: amd64
+2026-01-31T19:57:31Z INF Settings: map[ha-connections:1 protocol:quic url:http://127.0.0.1:8000]
+2026-01-31T19:57:31Z INF Generated Connector ID: a0d02720-7a4c-4b0c-9e0d-71994c8cc896
+2026-01-31T19:57:31Z INF cloudflared will not automatically update on Windows systems.
+2026-01-31T19:57:31Z INF Initial protocol quic
+2026-01-31T19:57:31Z INF ICMP proxy will use 192.168.1.7 as source for IPv4
+2026-01-31T19:57:31Z INF ICMP proxy will use 2401:4900:88b0:219b:5cda:1649:252a:3a9c in zone WiFi as source for IPv6
+2026-01-31T19:57:31Z INF cloudflared does not support loading the system root certificate pool on Windows. Please use --origin-ca-pool <PATH> to specify the path to the certificate pool
+2026-01-31T19:57:31Z INF Starting metrics server on 127.0.0.1:20241/metrics
+2026-01-31T19:57:33Z INF Registered tunnel connection connIndex=0 connection=1dd027b7-92f9-4573-9336-d2f521c0b2ea event=0 ip=198.41.200.13 location=bom08 protocol=quic

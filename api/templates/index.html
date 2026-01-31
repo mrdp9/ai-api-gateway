@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>API Key Dashboard</title>
+    <link rel="stylesheet" href="{{ url_for('static', path='style.css') }}">
+</head>
+<body>
+    <div class="container">
+        <h1>🔑 API Key Dashboard</h1>
+        
+        <div class="header-info">
+            <p><strong>Welcome to your API Key Management Portal</strong></p>
+            <p>Manage your API keys below. Each key grants access to the API endpoints.</p>
+            <p id="tunnel-info" style="display:none; margin-top: 1em; background: #fff3cd; padding: 0.8em; border-radius: 4px; border-left: 4px solid #ffc107;">
+                🌐 <strong>Tunnel URL:</strong> <span id="tunnel-url"></span>
+            </p>
+        </div>
+        
+        <div class="form-section">
+            <h2>Create New Key</h2>
+            <div class="form-group">
+                <label for="key-expiration">Expires on:</label>
+                <input type="date" id="key-expiration">
+                <button type="button" class="btn btn-primary" onclick="createApiKey()">
+                    <span>✓</span> Create Key
+                </button>
+            </div>
+            <div id="tunnel-info" style="display:none; margin-top: 1em; background: #fff3cd; padding: 0.8em; border-radius: 4px; border-left: 4px solid #ffc107;">
+                🌐 <strong>Tunnel URL:</strong> <a id="tunnel-url" href="#" target="_blank"></a>
+            </div>
+        </div>
+        
+        <h2>Existing Keys</h2>
+        {% if keys %}
+        <table>
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Created</th>
+                    <th>Expires</th>
+                    <th>Status</th>
+                    <th>Action</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for key in keys %}
+                <tr>
+                    <td>#{{ key['id'] }}</td>
+                    <td>{{ key['created_at'][:10] }}</td>
+                    <td>{{ key['expires_at'][:10] if key['expires_at'] else 'Never' }}</td>
+                    <td>
+                        {% if key['revoked'] %}
+                            <span class="status-badge status-revoked">Revoked</span>
+                        {% elif key['expires_at'] %}
+                            <span class="status-badge status-active">Active</span>
+                        {% endif %}
+                    </td>
+                    <td>
+                        {% if not key['revoked'] %}
+                        <button type="button" class="revoke-btn" onclick="deleteApiKey({{ key['id'] }})">Revoke</button>
+                        {% else %}
+                        <span style="color: #999;">-</span>
+                        {% endif %}
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+        {% else %}
+        <div class="info-box">
+            <strong>No API keys created yet.</strong> Create your first key to start using the API.
+        </div>
+        {% endif %}
+        
+        <div class="footer">
+            <p>💡 <strong>Usage:</strong> Include your API key in the <code>x-api-key</code> header when calling API endpoints.</p>
+            <p>🔒 <strong>Security:</strong> Keep your API keys secret. Revoke compromised keys immediately.</p>
+        </div>
+    </div>
+    
+    <script src="{{ url_for('static', path='dashboard.js') }}"></script>
+</body>
+</html>

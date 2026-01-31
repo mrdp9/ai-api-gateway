@@ -1,0 +1,8 @@
+fastapi
+uvicorn
+pydantic
+requests
+jinja2
+email-validator
+python-multipart
+slowapi

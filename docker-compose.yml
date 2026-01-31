@@ -1,0 +1,65 @@
+version: '3.8'
+
+services:
+  api:
+    build:
+      context: ./api
+      dockerfile: Dockerfile
+    container_name: ai-api-gateway
+    ports:
+      - "3001:8000"
+    environment:
+      - SECRET_KEY=${SECRET_KEY:-dev-secret-key-change-me}
+      - ADMIN_USER=${ADMIN_USER:-admin}
+      - ADMIN_PASS=${ADMIN_PASS:-change-me}
+      - OLLAMA_URL=${OLLAMA_URL:-http://host.docker.internal:11434/api/generate}
+      - DB_URL=/app/data/keys.db
+      - ADMIN_EMAIL=${ADMIN_EMAIL:-prjctxno@gmail.com}
+      - SMTP_USER=${SMTP_USER:-}
+      - SMTP_PASSWORD=${SMTP_PASSWORD:-}
+      - SMTP_SERVER=${SMTP_SERVER:-smtp.gmail.com}
+      - SMTP_PORT=${SMTP_PORT:-587}
+    volumes:
+      - ./data:/app/data
+    networks:
+      - ai-network
+    depends_on:
+      - tunnel
+
+  tunnel:
+    image: cloudflare/cloudflared:latest
+    container_name: ai-api-tunnel
+    networks:
+      - ai-network
+    environment:
+      - TUNNEL_TOKEN=${TUNNEL_TOKEN:-}
+    command: tunnel run
+    restart: unless-stopped
+    depends_on:
+      - api
+    healthcheck:
+      test: ["CMD", "sh", "-c", "tunnel info || exit 1"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+
+  # Optional: Startup helper to register tunnel URL with API
+  tunnel-notifier:
+    image: curlimages/curl:latest
+    container_name: tunnel-notifier
+    networks:
+      - ai-network
+    environment:
+      - API_URL=http://api:8000
+      - NOTIFICATION_SCRIPT=/scripts/notify-tunnel.sh
+    volumes:
+      - ./scripts/notify-tunnel.sh:/scripts/notify-tunnel.sh:ro
+    depends_on:
+      - api
+    restart: no
+    entrypoint: sh
+    command: -c "sleep 5 && sh /scripts/notify-tunnel.sh"
+
+networks:
+  ai-network:
+    driver: bridge
