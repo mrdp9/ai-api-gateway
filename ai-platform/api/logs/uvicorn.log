@@ -1,0 +1,18 @@
+INFO:     Started server process [295459]
+INFO:     Waiting for application startup.
+INFO:     Application startup complete.
+INFO:     Uvicorn running on http://0.0.0.0:3001 (Press CTRL+C to quit)
+INFO:     127.0.0.1:32844 - "GET / HTTP/1.1" 200 OK
+INFO:     127.0.0.1:40926 - "POST /delete/a255cf32e035e7cef6d50c9b8de9efdd1dd592d1c196d0514c2b28c1515a9ab4 HTTP/1.1" 302 Found
+INFO:     127.0.0.1:40932 - "GET / HTTP/1.1" 200 OK
+INFO:     127.0.0.1:60016 - "POST /delete/a255cf32e035e7cef6d50c9b8de9efdd1dd592d1c196d0514c2b28c1515a9ab4 HTTP/1.1" 302 Found
+INFO:     127.0.0.1:60020 - "GET / HTTP/1.1" 200 OK
+INFO:     127.0.0.1:33252 - "GET / HTTP/1.1" 200 OK
+INFO:     127.0.0.1:33252 - "POST /delete/406f5b42196b5030e24111804663bbc8639141f18088573292f0f350a89f2833 HTTP/1.1" 302 Found
+INFO:     127.0.0.1:33252 - "GET / HTTP/1.1" 200 OK
+INFO:     127.0.0.1:33252 - "POST /create HTTP/1.1" 200 OK
+INFO:     127.0.0.1:33264 - "GET / HTTP/1.1" 200 OK
+INFO:     Shutting down
+INFO:     Waiting for application shutdown.
+INFO:     Application shutdown complete.
+INFO:     Finished server process [295459]

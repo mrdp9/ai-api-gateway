@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>AI API Keys</title>
+<style>
+body{
+  font-family: system-ui, sans-serif;
+  background:#0f172a;
+  color:#e5e7eb;
+  padding:40px;
+}
+.card{
+  background:#1e293b;
+  padding:20px;
+  border-radius:14px;
+  margin-bottom:20px;
+  box-shadow:0 10px 20px rgba(0,0,0,.3);
+}
+button{
+  background:#38bdf8;
+  border:none;
+  padding:8px 14px;
+  border-radius:8px;
+  cursor:pointer;
+  font-weight:600;
+}
+input{
+  padding:8px;
+  border-radius:8px;
+  border:none;
+  margin-right:10px;
+}
+.key{
+  font-family:monospace;
+  word-break:break-all;
+}
+.badge{
+  padding:4px 10px;
+  border-radius:999px;
+  font-size:12px;
+}
+.ok{background:#22c55e}
+.expired{background:#ef4444}
+</style>
+</head>
+
+<body>
+
+<h1>🔑 API Key Manager</h1>
+
+<div class="card">
+<form action="/create" method="post">
+<input name="name" placeholder="Service name" required>
+<input name="days" type="number" value="30">
+<button>Create Key</button>
+</form>
+</div>
+
+{% for k in keys %}
+<div class="card">
+<b>{{k.name}}</b><br><br>
+
+<div class="key" id="key-{{k.id}}">{% if k.key %}{{k.key}}{% else %}Hidden (shown once). ID: {{k.id}} | hash: {{k.key_hash[-8:] if k.key_hash }}{% endif %}</div><br>
+
+<span class="badge {% if k.expires_at > now %}ok{% else %}expired{% endif %}">
+{% if k.expires_at > now %}Active{% else %}Expired{% endif %}
+</span>
+
+Expires: {{k.expires_at}}
+
+<br><br>
+
+{% if k.key %}
+  <button onclick="navigator.clipboard.writeText('{{k.key}}')">Copy</button>
+{% else %}
+  <button disabled title="Key not available">Copy</button>
+{% endif %}
+
+<form action="/delete/{{k.key_hash}}" method="post" style="display:inline">
+<button style="background:#ef4444">Delete</button>
+</form>
+</div>
+{% endfor %}
+
+</body>
+</html>

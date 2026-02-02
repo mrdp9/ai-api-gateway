@@ -1,0 +1,35 @@
+version: "3.9"
+
+services:
+
+  api:
+    image: python:3.11-slim
+    volumes:
+      - ./api:/app
+      - ./data:/data
+    working_dir: /app
+    command: >
+      sh -c "pip install -r requirements.txt &&
+             uvicorn main:app --host 0.0.0.0 --port 8000"
+    ports:
+      - "3001:8000"
+    restart: unless-stopped
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
+
+  tunnel:
+    image: cloudflare/cloudflared:2023.11.0
+    depends_on:
+      - api
+    # Provide credentials by setting CLOUDFLARE_TUNNEL_TOKEN env or mounting /etc/cloudflared
+    environment:
+      - CLOUDFLARE_TUNNEL_TOKEN=${CLOUDFLARE_TUNNEL_TOKEN:-}
+    command: sh -c "if [ -n \"$CLOUDFLARE_TUNNEL_TOKEN\" ]; then tunnel --no-autoupdate --url http://api:8000 --token $CLOUDFLARE_TUNNEL_TOKEN; else tunnel --no-autoupdate --url http://api:8000; fi"
+    volumes:
+      - ./cloudflared:/etc/cloudflared:ro
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD-SHELL", "curl -sSf http://api:8000/health || exit 1"]
+      interval: 30s
+      timeout: 5s
+      retries: 3

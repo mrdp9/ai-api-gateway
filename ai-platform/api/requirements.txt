@@ -1,0 +1,13 @@
+fastapi
+uvicorn
+requests
+httpx
+jinja2
+sqlalchemy
+python-multipart
+python-dotenv
+pydantic
+slowapi
+pytest
+pytest-asyncio
+httpx
